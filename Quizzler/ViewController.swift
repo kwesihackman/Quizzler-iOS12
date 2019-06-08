@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     let allQuestions = QuestionBank()
     var selectedAnswer = false
     var questionNumber = 0
+    var userScore = 0
     
     
     @IBOutlet weak var questionLabel: UILabel!
@@ -23,6 +24,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updateUI()
         let firstQuestion = allQuestions.list[questionNumber]
         questionLabel.text = firstQuestion.question
         
@@ -45,13 +47,15 @@ class ViewController: UIViewController {
     
     
     func updateUI() {
-      
+        scoreLabel.text = " Score : \(userScore)"
+        progressLabel.text = "\(questionNumber+1) / \(allQuestions.list.count)"
     }
     
 
     func nextQuestion() {
         if questionNumber <= allQuestions.list.count-1{
             questionLabel.text = allQuestions.list[questionNumber].question
+            updateUI()
         }else{
             let alert = UIAlertController(title: "End Of Quiz", message: "You finished all the question, would you like to restart", preferredStyle: .alert)
             
@@ -70,7 +74,7 @@ class ViewController: UIViewController {
         let correctAnswer = allQuestions.list[questionNumber].answer
         
         if correctAnswer == selectedAnswer{
-            debugPrint("You got it")
+           userScore += 10
         }else{
             debugPrint("wrong")
         }
@@ -80,7 +84,8 @@ class ViewController: UIViewController {
     
     func startOver() {
         questionNumber = 0
-       questionLabel.text = allQuestions.list[questionNumber].question
+        userScore = 0
+       nextQuestion()
     }
     
 
