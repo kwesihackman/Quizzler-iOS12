@@ -11,6 +11,8 @@ import UIKit
 class ViewController: UIViewController {
     
     //Place your instance variables here
+    let allQuestions = QuestionBank()
+    var selectedAnswer = false
     
     
     @IBOutlet weak var questionLabel: UILabel!
@@ -20,12 +22,20 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let firstQuestion = allQuestions.list[0]
+        questionLabel.text = firstQuestion.question
         
     }
 
 
     @IBAction func answerPressed(_ sender: AnyObject) {
-  
+        if sender.tag == 1{
+            selectedAnswer = true
+        }else if sender.tag == 2{
+            selectedAnswer = false
+        }
+        
+        self.checkAnswer()
     }
     
     
