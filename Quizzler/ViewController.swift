@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     //Place your instance variables here
     let allQuestions = QuestionBank()
     var selectedAnswer = false
+    var questionNumber = 0
     
     
     @IBOutlet weak var questionLabel: UILabel!
@@ -22,7 +23,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let firstQuestion = allQuestions.list[0]
+        let firstQuestion = allQuestions.list[questionNumber]
         questionLabel.text = firstQuestion.question
         
     }
@@ -36,6 +37,10 @@ class ViewController: UIViewController {
         }
         
         self.checkAnswer()
+        questionNumber += 1
+        self.nextQuestion()
+       
+        
     }
     
     
@@ -45,17 +50,37 @@ class ViewController: UIViewController {
     
 
     func nextQuestion() {
+        if questionNumber <= allQuestions.list.count-1{
+            questionLabel.text = allQuestions.list[questionNumber].question
+        }else{
+            let alert = UIAlertController(title: "End Of Quiz", message: "You finished all the question, would you like to restart", preferredStyle: .alert)
+            
+            let restartAction = UIAlertAction(title: "Restart", style: .default) { (UIAlertAction) in
+                self.startOver()
+            }
+            
+            alert.addAction(restartAction)
+            self.present(alert, animated: true)
+        }
         
     }
     
     
     func checkAnswer() {
+        let correctAnswer = allQuestions.list[questionNumber].answer
+        
+        if correctAnswer == selectedAnswer{
+            debugPrint("You got it")
+        }else{
+            debugPrint("wrong")
+        }
         
     }
     
     
     func startOver() {
-       
+        questionNumber = 0
+       questionLabel.text = allQuestions.list[questionNumber].question
     }
     
 
